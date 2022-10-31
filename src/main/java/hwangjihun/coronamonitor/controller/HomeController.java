@@ -128,12 +128,13 @@ public class HomeController {
     public void init() throws IOException {
 
         int count = coronaApiService.deleteAll();
-        log.info("영향을 받은 row count = {}", count);
+        log.info("delete 영향을 받은 row count = {}", count);
 
         List<CoronaData> coronaDataList = coronaApiService.findCoronaApi(400);
 
         for (CoronaData coronaData : coronaDataList) {
             coronaApiService.save(coronaData);
         }
+        log.info("초기화 완료");
     }
 }
