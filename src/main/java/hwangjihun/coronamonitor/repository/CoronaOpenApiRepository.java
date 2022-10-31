@@ -189,11 +189,11 @@ public class CoronaOpenApiRepository {
                 .executeUpdate();
     }
 
-    public CoronaData getRecentCoronaData() {
+    public List<CoronaData> getRecentCoronaData() {
 
         String jpql = "select c from CoronaData c order by c.statusDt desc";
 
         TypedQuery<CoronaData> query = entityManager.createQuery(jpql, CoronaData.class);
-        return query.setMaxResults(1).getSingleResult();
+        return query.setMaxResults(1).getResultList();
     }
 }

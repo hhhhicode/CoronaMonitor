@@ -92,7 +92,6 @@ public class HomeController {
         //Pie Chart
         List<Integer> pieChartValues = coronaApiService.getPieChart();
         model.addAttribute("pieChartValueList", pieChartValues);
-        log.info("pieChartValues = {}", pieChartValues);
 
         return "/charts";
     }
@@ -124,7 +123,7 @@ public class HomeController {
         return coronaTableDtoList;
     }
 
-    @PostConstruct
+   // @PostConstruct
     public void init() throws IOException {
 
         int count = coronaApiService.deleteAll();

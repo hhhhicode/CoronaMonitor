@@ -91,7 +91,11 @@ public class CoronaApiService {
         int numberOfNonDeathConfirmedCases = 0;
         int numberOfDeathConfirmedCases = 0;
         List<Integer> returnValues = new ArrayList<>();
-        CoronaData recentCoronaData = coronaOpenApiRepository.getRecentCoronaData();
+        List<CoronaData> recentCoronaDataList = coronaOpenApiRepository.getRecentCoronaData();
+        CoronaData recentCoronaData = null;
+        if (recentCoronaDataList.size() != 0) {
+            recentCoronaData = recentCoronaDataList.get(0);
+        }
         if (recentCoronaData != null) {
             numberOfNonConfirmedCases = allPopulation - recentCoronaData.getHPntCnt();
             numberOfNonDeathConfirmedCases = recentCoronaData.getHPntCnt() - recentCoronaData.getGPntCnt();
