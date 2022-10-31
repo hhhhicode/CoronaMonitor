@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/common_head :: common_header}"></head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
+                            </div>
+                            <form class="user" action="" th:action th:object="${member}" method="post">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                            placeholder="*이름" th:field="*{userName}" th:errorclass="field-error">
+                                        <div class="field-error" th:errors="*{userName}">
+                                            이름 오류
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                            placeholder="나이" th:field="*{age}" th:errorclass="field-error">
+                                        <div class="field-error" th:errors="*{age}">
+                                            나이 오류
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                                        placeholder="*아이디" th:field="*{userId}" th:errorclass="field-error">
+                                    <div class="field-error" th:errors="*{userId}">
+                                        아이디 오류
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user"
+                                           id="exampleInputPassword" placeholder="*비밀번호" th:field="*{password}" th:errorclass="field-error">
+                                    <div class="field-error" th:errors="*{password}">
+                                        비밀번호 오류
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <button type="submit" class="btn btn-primary btn-user btn-block" th:text="가입하기">
+                                            Register Account
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-light btn-user btn-block" th:text="취소" th:onclick="|location.href='@{/}'|">
+                                            Register Account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="forgot-password.html" th:text="|비밀번호 찾기 (구현중)|">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="login.html" th:href="@{/members/login}" th:text="|이미 가입하셨다면, 로그인 하기|">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
