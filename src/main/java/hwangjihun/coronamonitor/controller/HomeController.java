@@ -49,7 +49,6 @@ public class HomeController {
         //Pie Chart
         List<Integer> pieChartValues = coronaApiService.getPieChart();
         model.addAttribute("pieChartValueList", pieChartValues);
-        log.info("pieChartValues = {}", pieChartValues);
 
         // Cards
         List<Float> cardsValueList = coronaApiService.getCardsValue();
