@@ -98,4 +98,10 @@ public class MemberController {
 
         return "redirect:/home";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+
+        return "/members/profile";
+    }
 }
