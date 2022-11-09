@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head th:replace="~{common/common_head :: common_header}"></head>
 
@@ -16,10 +16,10 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content">
+            <div id="content" th:object="${member}">
 
                 <!-- Topbar -->
-                <nav th:replace="~{common/common_topbar :: common_topbar (${session.get('loginMember')?.userName})}"></nav>
+                <nav th:replace="~{common/common_topbar :: common_topbar (${member})}"></nav>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -30,7 +30,7 @@
                     <p class="mb-4">사용자의 프로필을 확인하고 수정할 수 있습니다.</p>
 
                     <!-- Content Row -->
-                    <form class="user" action="" th:action th:object="${member}" method="post" enctype="multipart/form-data">
+                    <form class="user" action="" th:action method="post" enctype="multipart/form-data">
                         <div class="py-xl-5">
 
                             <!-- userId 확인 -->
@@ -47,6 +47,7 @@
                                                 <input type="text"
                                                        class="form-control-plaintext flex-fill"
                                                        style="font-size: 200%; text-align: center"
+                                                       th:field="*{userId}"
                                                        th:placeholder="|아이디|">
                                             </div>
                                         </div>
@@ -64,12 +65,17 @@
                                                       th:text="|프로필 사진|"></span>
                                             </div>
                                             <div class="col-sm-7" style="display: flex; justify-content: center; align-items: center">
-                                                <img src="/img/undraw_profile.svg" width="100" height="100">
+                                                <img id="thumbnail"
+                                                     src="/img/undraw_profile.svg"
+                                                     th:src="|/images/*{profileImage}|"
+                                                     width="150" height="150">
                                             </div>
                                             <div class="col-sm-1">
-                                                <button class="btn btn-primary btn-user btn-block"
-                                                      style="font-size: 100%; text-align: center"
-                                                      th:text="|변경|"></button>
+                                                <label class="btn btn-primary btn-user btn-block" for="input-file">변경</label>
+                                                <input id="input-file"
+                                                       style="display: none"
+                                                       th:field="*{profileImage}"
+                                                       type="file" onchange="setThumbnail(event)">
                                             </div>
                                         </div>
                                     </div>
@@ -89,6 +95,7 @@
                                                 <input type="text"
                                                        class="form-control-plaintext flex-fill"
                                                        style="font-size: 200%; text-align: center"
+                                                       th:field="*{userName}"
                                                        th:placeholder="|유저이름|">
                                             </div>
                                         </div>
@@ -120,7 +127,7 @@
                             <div class="col-xl-auto">
                                 <div class="card mb-4 py-3 border-left-danger">
                                     <div class="card-body">
-                                        비밀번호를 입력해야 수정 가능하도록
+                                        비밀번호를 입력해야 수정 가능하도록?
                                     </div>
                                 </div>
                             </div>
@@ -163,14 +170,29 @@
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!-- 이미지 미리보기 -->
+    <script th:inline="javascript">
+        function setThumbnail(event){
+            var reader = new FileReader();
+
+            reader.onload = function(event){
+                let thumbnail = document.getElementById("thumbnail");
+                thumbnail.setAttribute("src", event.target.result);
+                // document.querySelector("div#image_container").appendChild(img);
+            };
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 </body>
 

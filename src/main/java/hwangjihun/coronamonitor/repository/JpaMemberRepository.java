@@ -28,13 +28,19 @@ public class JpaMemberRepository implements MemberRepository{
         return member;
     }
 
+    /**
+     * JPA가 커밋 시간대에 변화를 감지하고 자동으로 update 해준다.
+     * 우선 적용시키고 싶으면 플러쉬를 해야한다.
+     * @param id
+     * @param memberUpdateDto
+     */
     @Override
     public void update(Long id, MemberUpdateDto memberUpdateDto) {
         Member findMember = entityManager.find(Member.class, id);
         findMember.setPassword(memberUpdateDto.getPassword());
         findMember.setUserName(memberUpdateDto.getUserName());
         findMember.setAge(memberUpdateDto.getAge());
-        // JPA가 변화를 감지하고 자동으로 update 해준다.
+        findMember.setProfileImage(memberUpdateDto.getProfileImage());
     }
 
     @Override

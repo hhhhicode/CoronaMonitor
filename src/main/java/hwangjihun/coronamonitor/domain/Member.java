@@ -16,6 +16,8 @@ public class Member {
     @Column(name = "user_name")
     private String userName;
     private Integer age;
+    @Column(name = "profile_image")
+    private String profileImage;
 
     public Member() {}
 

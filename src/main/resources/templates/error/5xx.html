@@ -19,7 +19,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav th:replace="~{common/common_topbar :: common_topbar (${session.get('loginMember')?.userName})}"></nav>
+                <nav th:replace="~{common/common_topbar :: common_topbar (${member})}"></nav>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -75,14 +75,14 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 

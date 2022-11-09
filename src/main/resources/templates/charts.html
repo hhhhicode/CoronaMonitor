@@ -20,7 +20,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:replace="~{common/common_topbar :: common_topbar(${session.get('loginMember')?.userName})}"></nav>
+            <nav th:replace="~{common/common_topbar :: common_topbar(${member})}"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->

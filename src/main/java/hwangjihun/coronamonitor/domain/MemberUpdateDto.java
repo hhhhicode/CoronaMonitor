@@ -10,4 +10,5 @@ public class MemberUpdateDto {
     private final String password;
     private final String userName;
     private final Integer age;
+    private final String profileImage;
 }
