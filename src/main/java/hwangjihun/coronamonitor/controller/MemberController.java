@@ -9,6 +9,7 @@ import hwangjihun.coronamonitor.repository.MemberRepository;
 import hwangjihun.coronamonitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,12 @@ import javax.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+
+    /**
+     * member 의 profile 사진을 업로드할 경로
+     */
+    @Value("${file.dir}")
+    private String fileDir;
 
     @GetMapping("/register")
     public String registerForm(@ModelAttribute("member") Member member) {
@@ -99,7 +106,19 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public String profileForm(Model model) {
+    public String profileForm(HttpServletRequest request, Model model, @ModelAttribute("member") Member member) {
+
+        //TODO 데이터를 담아서 profile 화면에 보여주어야 한다.
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            Member sessionMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+            member.setId(sessionMember.getId());
+            member.setUserId(sessionMember.getUserId());
+            member.setPassword(sessionMember.getPassword());
+            member.setUserName(sessionMember.getUserName());
+            member.setAge(sessionMember.getAge());
+        }
 
         return "/members/profile";
     }
