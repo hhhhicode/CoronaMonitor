@@ -24,9 +24,9 @@ import java.util.Optional;
 public class HomeController {
 //TODO /error 접근시 Member 객체 전달하는 방법 찾기.
     @ModelAttribute("member")
-    public Member member(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
-        if (loginMember != null) {
-            Optional<Member> optionalMember = memberService.findById(loginMember.getId());
+    public Member member(@SessionAttribute(name = SessionConst.LOGIN_ID, required = false) Long loginId) {
+        if (loginId != null) {
+            Optional<Member> optionalMember = memberService.findById(loginId);
             if (!optionalMember.isEmpty()) {
                 return optionalMember.get();
             }

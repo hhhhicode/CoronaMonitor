@@ -85,7 +85,7 @@ public class MemberController {
         //로그인 성공시
 
         HttpSession session = request.getSession(true);
-        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        session.setAttribute(SessionConst.LOGIN_ID, loginMember.getId());
 
         log.info("로그인 성공 = {}", loginMember);
         model.addAttribute("loginMember", loginMember);
@@ -113,14 +113,13 @@ public class MemberController {
      */
     @GetMapping("/profile")
     public String profileForm(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+            @SessionAttribute(name = SessionConst.LOGIN_ID, required = false) Long loginId,
             Model model) {
 
-        if (loginMember == null) {
+        if (loginId == null) {
             return "redirect:/members/login";
         }
-
-        Optional<Member> optionalMember = memberService.findById(loginMember.getId());
+        Optional<Member> optionalMember = memberService.findById(loginId);
 
         if (optionalMember.isEmpty()) {
             model.addAttribute("member", new Member());
@@ -134,11 +133,11 @@ public class MemberController {
     @PostMapping("/profile")
     public String profileEdit(
             @ModelAttribute uploadProfileDto uploadProfileDto,
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
+            @SessionAttribute(name = SessionConst.LOGIN_ID, required = false) Long loginId) throws IOException {
 
         //TODO profileDto와 MemberUpdateDto의 의의가 겹쳤다. 의미 분리가 필요하지 않다면, 둘 중 하나 수정 혹은 제거가 필요하다.
-        if (loginMember == null) return "redirect:/members/login";
-        Optional<Member> optionalMember = memberService.findById(loginMember.getId());
+        if (loginId == null) return "redirect:/members/login";
+        Optional<Member> optionalMember = memberService.findById(loginId);
         Member findMember = optionalMember.isEmpty() ? null : optionalMember.get();
 
         if (findMember != null) {
