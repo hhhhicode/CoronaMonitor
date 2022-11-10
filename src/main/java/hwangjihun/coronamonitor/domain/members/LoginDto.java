@@ -1,4 +1,4 @@
-package hwangjihun.coronamonitor.domain;
+package hwangjihun.coronamonitor.domain.members;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

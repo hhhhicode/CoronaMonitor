@@ -1,7 +1,7 @@
 package hwangjihun.coronamonitor.repository;
 
-import hwangjihun.coronamonitor.domain.Member;
-import hwangjihun.coronamonitor.domain.MemberUpdateDto;
+import hwangjihun.coronamonitor.domain.members.Member;
+import hwangjihun.coronamonitor.domain.members.MemberUpdateDto;
 
 import java.util.List;
 import java.util.Optional;

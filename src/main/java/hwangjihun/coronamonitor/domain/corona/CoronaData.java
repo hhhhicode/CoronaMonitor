@@ -1,4 +1,4 @@
-package hwangjihun.coronamonitor.domain;
+package hwangjihun.coronamonitor.domain.corona;
 
 import lombok.Data;
 import lombok.Getter;

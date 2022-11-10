@@ -1,9 +1,9 @@
 package hwangjihun.coronamonitor.controller;
 
-import hwangjihun.coronamonitor.domain.*;
 import hwangjihun.coronamonitor.domain.constvalue.members.SessionConst;
 import hwangjihun.coronamonitor.domain.file.FileStore;
 import hwangjihun.coronamonitor.domain.file.UploadFile;
+import hwangjihun.coronamonitor.domain.members.*;
 import hwangjihun.coronamonitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -108,52 +108,56 @@ public class MemberController {
     /**
      * Session의 id를 가지고 찾은 Member를 Model에 담아서 출력해준다.
      * userId, userName, age, profileImage를 변경할 수 있다.
-     * @param request
      * @param model
      * @return profile View로 내이동한다.
      */
     @GetMapping("/profile")
-    public String profileForm(HttpServletRequest request, Model model) {
+    public String profileForm(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+            Model model) {
 
-        //TODO 데이터를 담아서 profile 화면에 보여주어야 한다.
-        HttpSession session = request.getSession(false);
+        if (loginMember == null) {
+            return "redirect:/members/login";
+        }
 
-        if (session != null) {
-            Member sessionMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-            Optional<Member> optionalMember = memberService.findById(sessionMember.getId());
+        Optional<Member> optionalMember = memberService.findById(loginMember.getId());
 
-            if (optionalMember.isEmpty()) {
-                model.addAttribute("member", new Member());
-            } else {
-                Member findMember = optionalMember.get();
-                model.addAttribute("member", findMember);
-            }
+        if (optionalMember.isEmpty()) {
+            model.addAttribute("member", new Member());
+        } else {
+            model.addAttribute("member", optionalMember.get());
         }
 
         return "/members/profile";
     }
 
     @PostMapping("/profile")
-    public String profileEdit(@ModelAttribute uploadProfileDto uploadProfileDto, HttpServletRequest request) throws IOException {
+    public String profileEdit(
+            @ModelAttribute uploadProfileDto uploadProfileDto,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
 
         //TODO profileDto와 MemberUpdateDto의 의의가 겹쳤다. 의미 분리가 필요하지 않다면, 둘 중 하나 수정 혹은 제거가 필요하다.
-        //TODO update 이전의 profileImage 제거.
-        //TODO session에는 id를 넣고, 그 id를 가지고 조회하여 Member를 만들고, 그 Member를 model에 넣든 하여 보여주는게 맞는 것 같다.
-        HttpSession session = request.getSession(false);
-        Member sessionMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        Optional<Member> optionalMember = memberService.findById(sessionMember.getId());
+        if (loginMember == null) return "redirect:/members/login";
+        Optional<Member> optionalMember = memberService.findById(loginMember.getId());
         Member findMember = optionalMember.isEmpty() ? null : optionalMember.get();
 
         if (findMember != null) {
-            fileStore.deleteFile(findMember.getProfileImage());
-            UploadFile profileImage = fileStore.storeFile(uploadProfileDto.getProfileImage());
+            //프로필 사진 제거 및 업로드
+            String storeFileName = findMember.getProfileImage();
+            if (!uploadProfileDto.getProfileImage().isEmpty()) {
+                fileStore.deleteFile(findMember.getProfileImage());
+                storeFileName = fileStore
+                        .storeFile(uploadProfileDto.getProfileImage())
+                        .getStoreFileName();
+            }
+
             MemberUpdateDto memberUpdateDto = new MemberUpdateDto(
-                    sessionMember.getPassword(),
+                    findMember.getPassword(),
                     uploadProfileDto.getUserName(),
                     uploadProfileDto.getAge(),
-                    profileImage.getStoreFileName()
+                    storeFileName
             );
-            memberService.update(sessionMember.getId(), memberUpdateDto);
+            memberService.update(findMember.getId(), memberUpdateDto);
         }
 
         return "redirect:/members/profile";

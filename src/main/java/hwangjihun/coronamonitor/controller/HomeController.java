@@ -1,33 +1,22 @@
 package hwangjihun.coronamonitor.controller;
 
-import hwangjihun.coronamonitor.domain.CoronaData;
-import hwangjihun.coronamonitor.domain.CoronaTableDto;
-import hwangjihun.coronamonitor.domain.Member;
+import hwangjihun.coronamonitor.domain.corona.CoronaData;
+import hwangjihun.coronamonitor.domain.corona.CoronaTableDto;
+import hwangjihun.coronamonitor.domain.members.Member;
 import hwangjihun.coronamonitor.domain.constvalue.members.SessionConst;
-import hwangjihun.coronamonitor.domain.file.FileStore;
 import hwangjihun.coronamonitor.service.CoronaApiService;
 import hwangjihun.coronamonitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -35,11 +24,9 @@ import java.util.stream.Stream;
 public class HomeController {
 //TODO /error 접근시 Member 객체 전달하는 방법 찾기.
     @ModelAttribute("member")
-    public Member member(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            Member sessionMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-            Optional<Member> optionalMember = memberService.findById(sessionMember.getId());
+    public Member member(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
+        if (loginMember != null) {
+            Optional<Member> optionalMember = memberService.findById(loginMember.getId());
             if (!optionalMember.isEmpty()) {
                 return optionalMember.get();
             }
@@ -58,7 +45,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(HttpServletRequest request, Model model) {
+    public String home(Model model) {
 
         // Area Chart
         Map<String, Integer> areaChartMap = coronaApiService.getAreaChart();

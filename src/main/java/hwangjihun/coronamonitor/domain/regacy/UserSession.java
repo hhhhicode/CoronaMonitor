@@ -1,4 +1,4 @@
-package hwangjihun.coronamonitor.domain;
+package hwangjihun.coronamonitor.domain.regacy;
 
 import lombok.Data;
 

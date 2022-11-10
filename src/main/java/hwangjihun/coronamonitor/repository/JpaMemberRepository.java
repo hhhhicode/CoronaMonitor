@@ -1,7 +1,7 @@
 package hwangjihun.coronamonitor.repository;
 
-import hwangjihun.coronamonitor.domain.Member;
-import hwangjihun.coronamonitor.domain.MemberUpdateDto;
+import hwangjihun.coronamonitor.domain.members.Member;
+import hwangjihun.coronamonitor.domain.members.MemberUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
