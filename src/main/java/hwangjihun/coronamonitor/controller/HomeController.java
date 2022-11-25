@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +135,7 @@ public class HomeController {
         return coronaTableDtoList;
     }
 
-   // @PostConstruct
+    @PostConstruct
     public void init() throws IOException {
 
         int count = coronaApiService.deleteAll();

@@ -138,17 +138,4 @@ public class CoronaApiService {
 
         return coronaOpenApiRepository.deleteAll();
     }
-
-    @Scheduled(cron = "0 30 5 * * ?")
-    @Transactional
-    public void CoronaApiDbScheduler(int rangeNum) throws IOException {
-
-        int count = coronaOpenApiRepository.deleteAll();
-        log.info("영향을 받은 row count = {}", count);
-
-        List<CoronaData> coronaDataList = coronaOpenApiRepository.getApiData(rangeNum);
-        for (CoronaData coronaData : coronaDataList) {
-            coronaOpenApiRepository.save(coronaData);
-        }
-    }
 }
